@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="Hopital")
-public class Hopital extends User implements Serializable{
+public class Hopital  implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
@@ -42,9 +42,11 @@ public class Hopital extends User implements Serializable{
 
 	public Hopital() {
 		super();
+		this.medecin = new Medecin();
+		this.patient = new Patient();
 	}
 
-	public Hopital(long id, String dateRv, String nomHopital, String gouvernerat, int etatest, Medecin medecin,
+	public Hopital( String dateRv, String nomHopital, String gouvernerat, int etatest, Medecin medecin,
 			Patient patient) {
 		super();
 		this.id = id;
@@ -52,8 +54,7 @@ public class Hopital extends User implements Serializable{
 		this.nomHopital = nomHopital;
 		this.gouvernerat = gouvernerat;
 		this.etatest = etatest;
-		this.medecin = medecin;
-		this.patient = patient;
+
 	}
 
 	public long getId() {

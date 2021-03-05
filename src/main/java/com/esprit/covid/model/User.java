@@ -1,12 +1,18 @@
 package com.esprit.covid.model;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -17,40 +23,35 @@ public class User implements Serializable{
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	
-	@NotEmpty(message = "Nom est obligatoire")
-	@Size(min = 2, max = 10, message = "taille de nom doit être entre 2 et 10 caractères")
-	@Column(name="nom")
-	private String nom;
-	
-	@NotEmpty(message = "Prenom est obligatoire")
-	@Size(min = 2, max = 10, message = "taille de prenom doit être entre 2 et 10 caractères")
-	@Column(name="prenom")
-	private String prenom;
-	
-
-	
 	@Column(name="email")
 	private String email;
 	
 	@Column(name="mdp")
 	private String mdp;
-
+	
+	@Column(name="role")
+	private String role;
+	
+	@OneToMany(mappedBy="user",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+	private List<Patient> patients;
+	
+	@OneToMany(mappedBy="user",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+	private List<Medecin> medecins;
+	
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public User(long id,
-			@NotEmpty(message = "Nom est obligatoire") @Size(min = 2, max = 10, message = "taille de nom doit être entre 2 et 10 caractères") String nom,
-			@NotEmpty(message = "Prenom est obligatoire") @Size(min = 2, max = 10, message = "taille de prenom doit être entre 2 et 10 caractères") String prenom,
-			String email, String mdp) {
+
+	public User(long id, String email, String mdp, String role) {
 		super();
 		this.id = id;
-		this.nom = nom;
-		this.prenom = prenom;
 		this.email = email;
 		this.mdp = mdp;
+		this.role = role;
 	}
+
 
 	public long getId() {
 		return id;
@@ -58,22 +59,6 @@ public class User implements Serializable{
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public String getNom() {
-		return nom;
-	}
-
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-
-	public String getPrenom() {
-		return prenom;
-	}
-
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
 	}
 
 	public String getEmail() {
@@ -92,6 +77,17 @@ public class User implements Serializable{
 		this.mdp = mdp;
 	}
 
+
+	public String getRole() {
+		return role;
+	}
+
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -99,10 +95,10 @@ public class User implements Serializable{
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((mdp == null) ? 0 : mdp.hashCode());
-		result = prime * result + ((nom == null) ? 0 : nom.hashCode());
-		result = prime * result + ((prenom == null) ? 0 : prenom.hashCode());
+		result = prime * result + ((role == null) ? 0 : role.hashCode());
 		return result;
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -125,18 +121,14 @@ public class User implements Serializable{
 				return false;
 		} else if (!mdp.equals(other.mdp))
 			return false;
-		if (nom == null) {
-			if (other.nom != null)
+		if (role == null) {
+			if (other.role != null)
 				return false;
-		} else if (!nom.equals(other.nom))
-			return false;
-		if (prenom == null) {
-			if (other.prenom != null)
-				return false;
-		} else if (!prenom.equals(other.prenom))
+		} else if (!role.equals(other.role))
 			return false;
 		return true;
 	}
+
 	
 	
 }

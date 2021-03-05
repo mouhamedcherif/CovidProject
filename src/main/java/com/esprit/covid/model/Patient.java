@@ -7,18 +7,29 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 @Entity
 @Table(name="Patient")
-public class Patient extends User implements Serializable{
+public class Patient  implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	
-
+	@NotEmpty(message = "Nom est obligatoire")
+	@Size(min = 2, max = 10, message = "taille de nom doit être entre 2 et 10 caractères")
+	@Column(name="nom")
+	private String nom;
+	
+	@NotEmpty(message = "Prenom est obligatoire")
+	@Size(min = 2, max = 10, message = "taille de prenom doit être entre 2 et 10 caractères")
+	@Column(name="prenom")
+	private String prenom;
+	
 	@Column(name="numcnss")
 	private String numcnss;
 	
@@ -35,15 +46,31 @@ public class Patient extends User implements Serializable{
 	
 	@Column(name="region")
 	private String region;
-
+	
+	@JoinColumn(name="ID_User",referencedColumnName="id")
+	@ManyToOne(optional=false)
+	private User user;
+	
 	public Patient() {
 		super();
+		this.user = new User();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Patient(long id, String numcnss, String cin, String sex, int age, String region) {
+	public Patient(String nom,String prenom,String numcnss, String cin, String sex, int age, String region, User user) {
 		super();
-		this.id = id;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.numcnss = numcnss;
+		this.cin = cin;
+		this.sex = sex;
+		this.age = age;
+		this.region = region;
+		this.user = user;
+	}
+
+	public Patient( String numcnss, String cin, String sex, int age, String region) {
+		super();
 		this.numcnss = numcnss;
 		this.cin = cin;
 		this.sex = sex;
@@ -57,6 +84,22 @@ public class Patient extends User implements Serializable{
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public String getPrenom() {
+		return prenom;
+	}
+
+	public void setPrenom(String prenom) {
+		this.prenom = prenom;
 	}
 
 	public String getNumcnss() {

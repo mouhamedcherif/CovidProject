@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
@@ -18,7 +20,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="Medecin")
-public class Medecin extends User implements Serializable{
+public class Medecin  implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
@@ -33,23 +35,52 @@ public class Medecin extends User implements Serializable{
 	@Column(name="cin")
 	private String cin;
 	
+	@NotEmpty(message = "Nom est obligatoire")
+	@Size(min = 2, max = 10, message = "taille de nom doit être entre 2 et 10 caractères")
+	@Column(name="nom")
+	private String nom;
+	
+	@NotEmpty(message = "Prenom est obligatoire")
+	@Size(min = 2, max = 10, message = "taille de prenom doit être entre 2 et 10 caractères")
+	@Column(name="prenom")
+	private String prenom;
+	
 	//@JsonManagedReference
 	@OneToMany(mappedBy="medecin",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	private List<Hopital> Hopitals;
 
-
+	@JoinColumn(name="ID_User",referencedColumnName="id")
+	@ManyToOne(optional=false)
+	private User user;
+	
 	public Medecin() {
 		super();
+		this.user = new User();
+
 		// TODO Auto-generated constructor stub
 	}
 
-	public Medecin(long id,
-			String nom,
-			String prenom,
-			String email, String mdp) {
-		super(id, nom, prenom, email, mdp);
-		// TODO Auto-generated constructor stub
+
+	public Medecin(String sepc, String sex, String cin,String nom, String prenom,User user) {
+		super();
+		this.sepc = sepc;
+		this.sex = sex;
+		this.cin = cin;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.user = user;
 	}
+
+
+	public Medecin( String sepc, String sex, String cin,String nom,String prenom) {
+		super();
+		this.sepc = sepc;
+		this.sex = sex;
+		this.cin = cin;
+		this.nom = nom;
+		this.prenom = prenom;
+	}
+
 
 	public long getId() {
 		return id;
@@ -58,6 +89,26 @@ public class Medecin extends User implements Serializable{
 	public void setId(long id) {
 		this.id = id;
 	}
+
+	public String getNom() {
+		return nom;
+	}
+
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+
+	public String getPrenom() {
+		return prenom;
+	}
+
+
+	public void setPrenom(String prenom) {
+		this.prenom = prenom;
+	}
+
 
 	public String getSepc() {
 		return sepc;
