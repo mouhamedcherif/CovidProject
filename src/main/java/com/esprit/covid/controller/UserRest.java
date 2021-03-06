@@ -77,7 +77,7 @@ public class UserRest {
 		response.put("deleted", Boolean.TRUE);
 		return response;
 	}
-	@GetMapping("/medecins/recherche/{spec}")
+	@GetMapping("/User/recherche/{spec}")
 	public List<User>  recherche(@PathVariable("spec") String  res) throws Exception {		
 		/* récupérer les médecins correpondants role sélectionnée */
 		List<User> listmed = null;

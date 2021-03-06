@@ -15,5 +15,8 @@ public interface UserRepository extends JpaRepository<User, Long>{
 //			+ "and ( m.nom Like :pseudo or m.prenom Like :pseudo)")
 //	public List<Medecin> Search(@Param("spec") String s,
 //			@Param("pseudo") String p);
-
+	@Query(value="Select * from User m where m.email = :email and m.mdp = :mdp and m.role ='medecin'", nativeQuery=true)
+	public User checkloginmedecin(@Param("email") String email,@Param("mdp") String mdp);
+	@Query(value="Select * from User m where m.email = :email and m.mdp = :mdp and m.role ='patient'", nativeQuery=true)
+	public User checkloginpation(@Param("email") String email,@Param("mdp") String mdp);
 }
