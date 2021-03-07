@@ -60,8 +60,8 @@ public class MedecinRest {
 				medecin.setUser(user);
 			}
 			//a complete le test 
-			medecinRepository.save(medecin);
-			return null;
+			return medecinRepository.save(medecin);
+			 
 	}
 
 	@PutMapping("/Medecinsput/{id}")
@@ -74,7 +74,6 @@ public class MedecinRest {
 		medecin.setCin(MedecinDetails.getCin());
 		medecin.setSepc(MedecinDetails.getSepc());
 		medecin.setSex(MedecinDetails.getSex());
-		medecin.setHopitals(MedecinDetails.getHopitals());
 		final Medecin updatedMedecin = medecinRepository.save(medecin);
 		return ResponseEntity.ok(updatedMedecin);
 	}

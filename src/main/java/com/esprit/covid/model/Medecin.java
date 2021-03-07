@@ -45,12 +45,12 @@ public class Medecin  implements Serializable{
 	@Column(name="prenom")
 	private String prenom;
 	
-	//@JsonManagedReference
-	@OneToMany(mappedBy="medecin",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
-	private List<Hopital> Hopitals;
+//	//@JsonManagedReference
+//	@OneToMany(mappedBy="medecin",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+//	private List<Hopital> Hopitals;
 
 	@JoinColumn(name="ID_User",referencedColumnName="id")
-	@ManyToOne(optional=false)
+	@ManyToOne(cascade=CascadeType.ALL,optional=false)
 	private User user;
 	
 	public Medecin() {
@@ -145,32 +145,26 @@ public class Medecin  implements Serializable{
 	}
 
 
-
-	public List<Hopital> getHopitals() {
-		return Hopitals;
-	}
-
-	public void setHopitals(List<Hopital> hopitals) {
-		Hopitals = hopitals;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = super.hashCode();
+		int result = 1;
 		result = prime * result + ((cin == null) ? 0 : cin.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((Hopitals == null) ? 0 : Hopitals.hashCode());
+		result = prime * result + ((nom == null) ? 0 : nom.hashCode());
+		result = prime * result + ((prenom == null) ? 0 : prenom.hashCode());
 		result = prime * result + ((sepc == null) ? 0 : sepc.hashCode());
 		result = prime * result + ((sex == null) ? 0 : sex.hashCode());
+		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		return result;
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
@@ -182,10 +176,15 @@ public class Medecin  implements Serializable{
 			return false;
 		if (id != other.id)
 			return false;
-		if (Hopitals == null) {
-			if (other.Hopitals != null)
+		if (nom == null) {
+			if (other.nom != null)
 				return false;
-		} else if (!Hopitals.equals(other.Hopitals))
+		} else if (!nom.equals(other.nom))
+			return false;
+		if (prenom == null) {
+			if (other.prenom != null)
+				return false;
+		} else if (!prenom.equals(other.prenom))
 			return false;
 		if (sepc == null) {
 			if (other.sepc != null)
@@ -197,7 +196,15 @@ public class Medecin  implements Serializable{
 				return false;
 		} else if (!sex.equals(other.sex))
 			return false;
+		if (user == null) {
+			if (other.user != null)
+				return false;
+		} else if (!user.equals(other.user))
+			return false;
 		return true;
 	}
+
+
+
 	
 }

@@ -14,4 +14,10 @@ public interface PatientRepository extends JpaRepository<Patient, Long>{
 			+ "or m.cin = :cin or m.sex = :sex or region =:region", nativeQuery=true)
 	public List<Patient> Search(@Param("pseudo") String pseudo,@Param("cin") String cin,
 			@Param("sex") String sex,@Param("region") String region);
+	
+	 public Patient getPatientById(long id);
+	 
+	 @Query(value="Select m.id from Patient m where m.nom= :nom " , nativeQuery=true)
+		public long getIdPatient(@Param("nom") String nom);
+
 }

@@ -32,11 +32,11 @@ public class User implements Serializable{
 	@Column(name="role")
 	private String role;
 	
-	@OneToMany(mappedBy="user",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
-	private List<Patient> patients;
-	
-	@OneToMany(mappedBy="user",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
-	private List<Medecin> medecins;
+//	@OneToMany(mappedBy="user")
+//	private List<Patient> patients;
+//	
+//	@OneToMany(mappedBy="user")
+//	private List<Medecin> medecins;
 	
 	public User() {
 		super();
@@ -51,6 +51,9 @@ public class User implements Serializable{
 		this.mdp = mdp;
 		this.role = role;
 	}
+
+
+
 
 
 	public long getId() {

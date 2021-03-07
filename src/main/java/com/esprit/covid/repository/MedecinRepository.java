@@ -18,8 +18,11 @@ public interface MedecinRepository extends JpaRepository<Medecin, Long>{
 	public List<Medecin> Search(@Param("spec") String spec,@Param("pseudo") String pseudo,@Param("cin") String cin,
 			@Param("sex") String sex);
 	
+	 public Medecin getMedecinById(long id);
+
 //	public List<Medecin> findBySpecOrNomOrPernomOrCinOrSex( String spec, String pseudo,String cin,String sex);
 
-	
+	 @Query(value="Select m.id from Medecin m where m.nom= :nom " , nativeQuery=true)
+		public long getIdmedecin(@Param("nom") String nom);
 //
 }

@@ -19,4 +19,6 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	public User checkloginmedecin(@Param("email") String email,@Param("mdp") String mdp);
 	@Query(value="Select * from User m where m.email = :email and m.mdp = :mdp and m.role ='patient'", nativeQuery=true)
 	public User checkloginpation(@Param("email") String email,@Param("mdp") String mdp);
+	@Query(value="Select * from User m where m.email = :email and m.mdp = :mdp and m.role ='admin'", nativeQuery=true)
+	public User checkloginAffectation(@Param("email") String email,@Param("mdp") String mdp);
 }

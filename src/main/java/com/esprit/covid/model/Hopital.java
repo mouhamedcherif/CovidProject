@@ -2,8 +2,10 @@ package com.esprit.covid.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,22 +34,19 @@ public class Hopital  implements Serializable{
 	private int etatest;
 	//@JsonBackReference
 	@JoinColumn(name="ID_Medecin",referencedColumnName="id")
-	@ManyToOne(optional=false)
-	private Medecin medecin;
+	@ManyToOne(cascade=CascadeType.ALL ,optional=false)
+	public Medecin medecin;
 	
 	//@JsonBackReference
 	@JoinColumn(name="ID_Patient",referencedColumnName="id")
-	@ManyToOne(optional=false)
-	private Patient patient;
+	@ManyToOne(cascade=CascadeType.ALL, optional=false)
+	public Patient patient;
 
 	public Hopital() {
 		super();
-		this.medecin = new Medecin();
-		this.patient = new Patient();
 	}
 
-	public Hopital( String dateRv, String nomHopital, String gouvernerat, int etatest, Medecin medecin,
-			Patient patient) {
+	public Hopital( String dateRv, String nomHopital, String gouvernerat, int etatest) {
 		super();
 		this.id = id;
 		this.dateRv = dateRv;
@@ -55,6 +54,22 @@ public class Hopital  implements Serializable{
 		this.gouvernerat = gouvernerat;
 		this.etatest = etatest;
 
+	}
+
+	public Medecin getMedecin() {
+		return medecin;
+	}
+
+	public void setMedecin(Medecin medecin) {
+		this.medecin = medecin;
+	}
+
+	public Patient getPatient() {
+		return patient;
+	}
+
+	public void setPatient(Patient patient) {
+		this.patient = patient;
 	}
 
 	public long getId() {
@@ -100,12 +115,14 @@ public class Hopital  implements Serializable{
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = super.hashCode();
+		int result = 1;
 		result = prime * result + ((dateRv == null) ? 0 : dateRv.hashCode());
 		result = prime * result + etatest;
 		result = prime * result + ((gouvernerat == null) ? 0 : gouvernerat.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((medecin == null) ? 0 : medecin.hashCode());
 		result = prime * result + ((nomHopital == null) ? 0 : nomHopital.hashCode());
+		result = prime * result + ((patient == null) ? 0 : patient.hashCode());
 		return result;
 	}
 
@@ -113,7 +130,7 @@ public class Hopital  implements Serializable{
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
@@ -132,10 +149,20 @@ public class Hopital  implements Serializable{
 			return false;
 		if (id != other.id)
 			return false;
+		if (medecin == null) {
+			if (other.medecin != null)
+				return false;
+		} else if (!medecin.equals(other.medecin))
+			return false;
 		if (nomHopital == null) {
 			if (other.nomHopital != null)
 				return false;
 		} else if (!nomHopital.equals(other.nomHopital))
+			return false;
+		if (patient == null) {
+			if (other.patient != null)
+				return false;
+		} else if (!patient.equals(other.patient))
 			return false;
 		return true;
 	}
