@@ -31,10 +31,9 @@ import com.esprit.covid.repository.MedecinRepository;
 import com.esprit.covid.repository.PatientRepository;
 import com.esprit.covid.repository.UserRepository;
 
-@CrossOrigin(origins = "http://localhost:4200")
-
 @RestController
 @RequestMapping("/api/covid")
+@CrossOrigin(origins = "http://localhost:4200")
 public class HopitalRest {
 	@Autowired
 	private MedecinRepository medecinRepository;
@@ -60,20 +59,17 @@ public class HopitalRest {
 	}
 	@PostMapping("/rendv/ajout")
 	public Hopital createrendv(@Valid @RequestBody Hopital hopital ,
-							   @RequestParam(value ="email") String  email,
-							   @RequestParam(value ="mdp") String  mdp ,
 							   @RequestParam(value ="idMedecin") long  idMedecin,
 							   @RequestParam(value ="idPatient") long  idPatient)  {
 		
-			User user = userRepository.checkloginAffectation( email, mdp);
-				if(!user.equals(null)) {
+			//User user = userRepository.checkloginAffectation( email, mdp);
 					Medecin med = medecinRepository.getMedecinById(idMedecin);
 					Patient patient = patientRepository.getPatientById(idPatient);
 				
 					if(!(med.equals(null) && patient.equals(null)) )
 						hopital.setMedecin(med);
 						hopital.setPatient(patient);
-			}
+			
 			//a complete le test 
 			return hopitalRepository.save(hopital);
 	}
@@ -87,8 +83,8 @@ public class HopitalRest {
 		hopital.setEtatest(HopitalDetails.getEtatest());
 		hopital.setGouvernerat(HopitalDetails.getGouvernerat());
 		hopital.setNomHopital(HopitalDetails.getNomHopital());
-		hopital.setMedecin(HopitalDetails.getMedecin());
-		hopital.setPatient(HopitalDetails.getPatient());
+//		hopital.setMedecin(HopitalDetails.getMedecin());
+//		hopital.setPatient(HopitalDetails.getPatient());
 		final Hopital updatedRendv = hopitalRepository.save(hopital);
 		return ResponseEntity.ok(updatedRendv);
 	}

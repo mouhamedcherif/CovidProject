@@ -53,12 +53,11 @@ public class MedecinRest {
 
 	}
 // modifier la recuperation des donneés avec @params 
-	@PostMapping("/medecins/{email}/{mdp}")
-	public Medecin createmedecins(@Valid @RequestBody Medecin medecin ,@PathVariable("email") String  email,@PathVariable("mdp") String  mdp) {
-			User user = userRepository.checkloginmedecin( email, mdp);
-			if(!user.equals(null)) {
-				medecin.setUser(user);
-			}
+	@PostMapping("/medecins")
+	public Medecin createmedecins(@Valid @RequestBody Medecin medecin ,@RequestParam(value ="iduser") Long UsertId) {
+		User user = userRepository.getUserById(UsertId);
+		medecin.setUser(user);
+
 			//a complete le test 
 			return medecinRepository.save(medecin);
 			 

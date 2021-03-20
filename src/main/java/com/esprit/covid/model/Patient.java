@@ -22,13 +22,11 @@ public class Patient  implements Serializable{
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	
-	@NotEmpty(message = "Nom est obligatoire")
-	@Size(min = 2, max = 10, message = "taille de nom doit être entre 2 et 10 caractères")
+
 	@Column(name="nom")
 	private String nom;
 	
-	@NotEmpty(message = "Prenom est obligatoire")
-	@Size(min = 2, max = 10, message = "taille de prenom doit être entre 2 et 10 caractères")
+
 	@Column(name="prenom")
 	private String prenom;
 	
@@ -59,7 +57,10 @@ public class Patient  implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public Patient(String nom,String prenom,String numcnss, String cin, String sex, int age, String region, User user) {
+
+
+
+	public Patient(String nom, String prenom, String numcnss, String cin, String sex, int age, String region) {
 		super();
 		this.nom = nom;
 		this.prenom = prenom;
@@ -68,17 +69,12 @@ public class Patient  implements Serializable{
 		this.sex = sex;
 		this.age = age;
 		this.region = region;
-		this.user = user;
+		this.user = new User();
+
 	}
 
-	public Patient( String numcnss, String cin, String sex, int age, String region) {
-		super();
-		this.numcnss = numcnss;
-		this.cin = cin;
-		this.sex = sex;
-		this.age = age;
-		this.region = region;
-	}
+
+
 
 	public User getUser() {
 		return user;

@@ -34,12 +34,12 @@ public class Hopital  implements Serializable{
 	private int etatest;
 	//@JsonBackReference
 	@JoinColumn(name="ID_Medecin",referencedColumnName="id")
-	@ManyToOne(cascade=CascadeType.ALL ,optional=false)
+	@ManyToOne(optional=false)
 	public Medecin medecin;
 	
 	//@JsonBackReference
 	@JoinColumn(name="ID_Patient",referencedColumnName="id")
-	@ManyToOne(cascade=CascadeType.ALL, optional=false)
+	@ManyToOne( optional=false)
 	public Patient patient;
 
 	public Hopital() {

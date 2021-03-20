@@ -1,60 +1,56 @@
 package com.esprit.covid.model;
 
 import java.io.Serializable;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 @Entity
-@Table(name="user")
-public class User implements Serializable{
+@Table(name="UserXml")
+@JacksonXmlRootElement(localName = "UserXml")
+public class UserXml implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+    @JacksonXmlProperty(isAttribute = true)
 	private long id;
 	
 	@Column(name="email")
+    @JacksonXmlProperty
 	private String email;
 	
 	@Column(name="mdp")
+    @JacksonXmlProperty
 	private String mdp;
 	
-	@Column(name="roler")
-	private String roler;
-	
-//	@OneToMany(mappedBy="user")
-//	private List<Patient> patients;
-//	
-//	@OneToMany(mappedBy="user")
-//	private List<Medecin> medecins;
-	
-	public User() {
+	@Column(name="role")
+    @JacksonXmlProperty
+	private String role;
+
+	public UserXml() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-
-	public User(long id, String email, String mdp, String role) {
+	public UserXml(long id, String email, String mdp, String role) {
 		super();
 		this.id = id;
 		this.email = email;
 		this.mdp = mdp;
-		this.roler = role;
+		this.role = role;
 	}
-
-
-
-
 
 	public long getId() {
 		return id;
@@ -80,16 +76,13 @@ public class User implements Serializable{
 		this.mdp = mdp;
 	}
 
-
-	public String getRoler() {
-		return roler;
+	public String getRole() {
+		return role;
 	}
 
-
-	public void setRoler(String roler) {
-		this.roler = roler;
+	public void setRole(String role) {
+		this.role = role;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -98,10 +91,9 @@ public class User implements Serializable{
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((mdp == null) ? 0 : mdp.hashCode());
-		result = prime * result + ((roler == null) ? 0 : roler.hashCode());
+		result = prime * result + ((role == null) ? 0 : role.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -111,7 +103,7 @@ public class User implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		UserXml other = (UserXml) obj;
 		if (email == null) {
 			if (other.email != null)
 				return false;
@@ -124,17 +116,12 @@ public class User implements Serializable{
 				return false;
 		} else if (!mdp.equals(other.mdp))
 			return false;
-		if (roler == null) {
-			if (other.roler != null)
+		if (role == null) {
+			if (other.role != null)
 				return false;
-		} else if (!roler.equals(other.roler))
+		} else if (!role.equals(other.role))
 			return false;
 		return true;
 	}
-
-
-	
-
-	
 	
 }

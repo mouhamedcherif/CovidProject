@@ -52,15 +52,11 @@ public class PatientRest {
 
 	}
 
-	@PostMapping("/Patients/{email}/{mdp}")
-	public Medecin createmedecins(@Valid @RequestBody Patient Patient ,@PathVariable("email") String  email,@PathVariable("mdp") String  mdp) {
-			User user = userRepository.checkloginpation( email, mdp);
-			if(!user.equals(null)) {
-				Patient.setUser(user);
-			}
-			//a compléte le test 
-			patientRepository.save(Patient);
-			return null;
+	@PostMapping("/Patients")
+	public Patient createmedecins(@Valid @RequestBody Patient Patient, @RequestParam(value ="iduser") Long UsertId ) {
+		User user = userRepository.getUserById(UsertId);
+		Patient.setUser(user);
+		return	patientRepository.save(Patient);
 	}
 
 	@PutMapping("/Patientsput/{id}")
@@ -73,6 +69,7 @@ public class PatientRest {
 		patient.setCin(PatientDetails.getCin());
 		patient.setAge(PatientDetails.getAge());
 		patient.setSex(PatientDetails.getSex());
+		patient.setRegion(PatientDetails.getRegion());
 		patient.setNumcnss(PatientDetails.getNumcnss());
 		final Patient updatedMedecin = patientRepository.save(patient);
 		return ResponseEntity.ok(updatedMedecin);
