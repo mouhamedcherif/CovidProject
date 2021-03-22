@@ -43,6 +43,10 @@ public class PatientRest {
 	public List<Patient> getAllEmployees() {
 		return patientRepository.findAll();
 	}
+	@GetMapping("/PatientRdv")
+	public List<Patient> getAllpatientRdv() {
+		return patientRepository.getlstPatient();
+	}
 
 	@GetMapping("/Patient/{id}")
 	public ResponseEntity<Patient> getUserById(@PathVariable(value = "id") Long MedecinId) throws Exception{
@@ -105,5 +109,20 @@ public class PatientRest {
 		return listmed;
 
 		
+	}
+	@PostMapping("/findPatient")
+	public Map<String, Object> findPatient(@RequestParam(value ="iduser") Long UsertId) {
+		Patient patient = patientRepository.getPatientByIduser(UsertId);
+			//a complete le test 
+		
+		Map<String, Object> response = new HashMap<>();
+		if(patient== null) {
+			response.put("find", Boolean.FALSE);
+			
+		}else {
+			response.put("idpatient", patient.getId());
+			response.put("find", Boolean.TRUE);
+		}
+			return response;	 
 	}
 }

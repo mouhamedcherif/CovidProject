@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.esprit.covid.model.Medecin;
+import com.esprit.covid.model.Patient;
 import com.esprit.covid.model.User;
 
 public interface MedecinRepository extends JpaRepository<Medecin, Long>{
@@ -24,5 +25,8 @@ public interface MedecinRepository extends JpaRepository<Medecin, Long>{
 
 	 @Query(value="Select m.id from Medecin m where m.nom= :nom " , nativeQuery=true)
 		public long getIdmedecin(@Param("nom") String nom);
+	 
+	 @Query(value="Select * from Medecin m where m.id_user= :id " , nativeQuery=true)
+	 public Medecin getPatientByIduser(@Param("id")long id);
 //
 }

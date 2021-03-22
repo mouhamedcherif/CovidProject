@@ -29,8 +29,8 @@ public class Medecin  implements Serializable{
 	private String sepc;
 	
 
-	@Column(name="sex")
-	private String sex;
+	@Column(name="experience")
+	private String experience;
 	
 	@Column(name="cin")
 	private String cin;
@@ -61,10 +61,10 @@ public class Medecin  implements Serializable{
 	}
 
 
-	public Medecin(String sepc, String sex, String cin,String nom, String prenom,User user) {
+	public Medecin(String sepc, String experience, String cin,String nom, String prenom,User user) {
 		super();
 		this.sepc = sepc;
-		this.sex = sex;
+		this.experience = experience;
 		this.cin = cin;
 		this.nom = nom;
 		this.prenom = prenom;
@@ -72,10 +72,10 @@ public class Medecin  implements Serializable{
 	}
 
 
-	public Medecin( String sepc, String sex, String cin,String nom,String prenom) {
+	public Medecin( String sepc, String experience, String cin,String nom,String prenom) {
 		super();
 		this.sepc = sepc;
-		this.sex = sex;
+		this.experience = experience;
 		this.cin = cin;
 		this.nom = nom;
 		this.prenom = prenom;
@@ -128,13 +128,6 @@ public class Medecin  implements Serializable{
 		this.sepc = sepc;
 	}
 
-	public String getSex() {
-		return sex;
-	}
-
-	public void setSex(String sex) {
-		this.sex = sex;
-	}
 
 	public String getCin() {
 		return cin;
@@ -145,16 +138,26 @@ public class Medecin  implements Serializable{
 	}
 
 
+	public String getExperience() {
+		return experience;
+	}
+
+
+	public void setExperience(String experience) {
+		this.experience = experience;
+	}
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((cin == null) ? 0 : cin.hashCode());
+		result = prime * result + ((experience == null) ? 0 : experience.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((nom == null) ? 0 : nom.hashCode());
 		result = prime * result + ((prenom == null) ? 0 : prenom.hashCode());
 		result = prime * result + ((sepc == null) ? 0 : sepc.hashCode());
-		result = prime * result + ((sex == null) ? 0 : sex.hashCode());
 		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		return result;
 	}
@@ -174,6 +177,11 @@ public class Medecin  implements Serializable{
 				return false;
 		} else if (!cin.equals(other.cin))
 			return false;
+		if (experience == null) {
+			if (other.experience != null)
+				return false;
+		} else if (!experience.equals(other.experience))
+			return false;
 		if (id != other.id)
 			return false;
 		if (nom == null) {
@@ -191,11 +199,6 @@ public class Medecin  implements Serializable{
 				return false;
 		} else if (!sepc.equals(other.sepc))
 			return false;
-		if (sex == null) {
-			if (other.sex != null)
-				return false;
-		} else if (!sex.equals(other.sex))
-			return false;
 		if (user == null) {
 			if (other.user != null)
 				return false;
@@ -203,6 +206,8 @@ public class Medecin  implements Serializable{
 			return false;
 		return true;
 	}
+
+
 
 
 

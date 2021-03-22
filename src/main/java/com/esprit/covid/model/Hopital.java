@@ -32,6 +32,8 @@ public class Hopital  implements Serializable{
 	
 	@Column(name="etatest")
 	private int etatest;
+	
+
 	//@JsonBackReference
 	@JoinColumn(name="ID_Medecin",referencedColumnName="id")
 	@ManyToOne(optional=false)
@@ -45,6 +47,8 @@ public class Hopital  implements Serializable{
 	public Hopital() {
 		super();
 	}
+
+
 
 	public Hopital( String dateRv, String nomHopital, String gouvernerat, int etatest) {
 		super();
@@ -112,6 +116,8 @@ public class Hopital  implements Serializable{
 		this.etatest = etatest;
 	}
 
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -166,6 +172,8 @@ public class Hopital  implements Serializable{
 			return false;
 		return true;
 	}
+
+	
 
 
 	

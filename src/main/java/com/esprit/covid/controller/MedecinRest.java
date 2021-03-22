@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.esprit.covid.model.Medecin;
+import com.esprit.covid.model.Patient;
 import com.esprit.covid.model.Recherche;
 import com.esprit.covid.model.User;
 import com.esprit.covid.repository.MedecinRepository;
@@ -72,7 +73,7 @@ public class MedecinRest {
 		medecin.setPrenom(MedecinDetails.getPrenom());
 		medecin.setCin(MedecinDetails.getCin());
 		medecin.setSepc(MedecinDetails.getSepc());
-		medecin.setSex(MedecinDetails.getSex());
+		medecin.setExperience(MedecinDetails.getExperience());
 		final Medecin updatedMedecin = medecinRepository.save(medecin);
 		return ResponseEntity.ok(updatedMedecin);
 	}
@@ -104,7 +105,20 @@ public class MedecinRest {
 
 		/* charger la liste de l'objet res  */
 		return listmed;
-
+	}
+	@PostMapping("/findMedecin")
+	public Map<String, Object> findPatient(@RequestParam(value ="iduser") Long UsertId) {
+		Medecin medecin = medecinRepository.getPatientByIduser(UsertId);
+			//a complete le test 
 		
+		Map<String, Object> response = new HashMap<>();
+		if(medecin== null) {
+			response.put("find", Boolean.FALSE);
+		}else {
+			response.put("idmedecin", medecin.getId());
+
+			response.put("find", Boolean.TRUE);
+		}
+			return response;	 
 	}
 }

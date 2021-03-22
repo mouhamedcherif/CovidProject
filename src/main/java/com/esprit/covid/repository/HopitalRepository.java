@@ -11,7 +11,7 @@ import com.esprit.covid.model.Medecin;
 
 public interface HopitalRepository extends JpaRepository<Hopital, Long>{
 	
-	@Query(value="Select * from Hopital m where m.id_medecin = :idmedecin ", nativeQuery=true)
+	@Query(value="Select * from Hopital  m , demand_rdv v where m.id_medecin = :idmedecin and m.id=v.id_hopital and v.etat=1", nativeQuery=true)
 	public List<Hopital> SearchMedecin(@Param("idmedecin") long idmedecin);
 	
 	@Query(value="Select * from Hopital m where m.id_patient = :idpatient ", nativeQuery=true)
@@ -21,4 +21,7 @@ public interface HopitalRepository extends JpaRepository<Hopital, Long>{
 			+ "or m.nom_hopital = :nomhopital or m.id_medecin = :idMedecin or m.id_patient = :idPatient ", nativeQuery=true)
 	public List<Hopital> Searchmultiple(@Param("daterv") String daterv,@Param("etatest") String etatest,@Param("gouvernerat") String gouvernerat,
 			@Param("nomhopital") String nomhopital,@Param("idMedecin") long idMedecin,@Param("idPatient") long idPatient);
+	 
+	public Hopital getHopitalById(long id);
+
 }

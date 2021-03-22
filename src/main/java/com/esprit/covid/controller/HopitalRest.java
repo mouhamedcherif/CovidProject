@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.esprit.covid.model.DemandRdv;
 import com.esprit.covid.model.Hopital;
 import com.esprit.covid.model.Medecin;
 import com.esprit.covid.model.Patient;
@@ -29,6 +30,7 @@ import com.esprit.covid.model.User;
 import com.esprit.covid.repository.HopitalRepository;
 import com.esprit.covid.repository.MedecinRepository;
 import com.esprit.covid.repository.PatientRepository;
+import com.esprit.covid.repository.RdvRepository;
 import com.esprit.covid.repository.UserRepository;
 
 @RestController
@@ -47,6 +49,9 @@ public class HopitalRest {
 	@Autowired
 	private HopitalRepository hopitalRepository;
 	
+	@Autowired
+	private RdvRepository rdvRepository;
+	
 	@GetMapping("/rendv")
 	public List<Hopital> getAllErendv() {
 		return hopitalRepository.findAll();
@@ -57,10 +62,22 @@ public class HopitalRest {
 		hopital = hopitalRepository.findById(rendvnId).orElseThrow(() -> new Exception("User not found for this id :: " + rendvnId));
 		return ResponseEntity.ok().body(hopital);	
 	}
+	@GetMapping("/rendvpatient")
+	public List<Hopital> getrendvByIdpatient(@RequestParam(value ="idPatient") Long idpatient) throws Exception{
+		List<Hopital> hopital = null;
+		hopital = hopitalRepository.SearchPatient(idpatient);
+		return hopital;	
+	}
+	@GetMapping("/rendvMedecin")
+	public List<Hopital> getrendvByIdMedecin(@RequestParam(value ="idMedecin") Long idmedecin) throws Exception{
+		List<Hopital> hopital = null;
+		hopital = hopitalRepository.SearchMedecin(idmedecin);
+		return hopital;	
+	}
 	@PostMapping("/rendv/ajout")
 	public Hopital createrendv(@Valid @RequestBody Hopital hopital ,
 							   @RequestParam(value ="idMedecin") long  idMedecin,
-							   @RequestParam(value ="idPatient") long  idPatient)  {
+							   @RequestParam(value ="idPatient") long  idPatient) throws Exception  {
 		
 			//User user = userRepository.checkloginAffectation( email, mdp);
 					Medecin med = medecinRepository.getMedecinById(idMedecin);
@@ -69,9 +86,25 @@ public class HopitalRest {
 					if(!(med.equals(null) && patient.equals(null)) )
 						hopital.setMedecin(med);
 						hopital.setPatient(patient);
+						
 			
 			//a complete le test 
-			return hopitalRepository.save(hopital);
+			 hopitalRepository.save(hopital);
+				DemandRdv demandRdv = new DemandRdv();
+
+			  demandRdv = rdvRepository.getPATIENTById(idPatient);
+				
+				if(demandRdv != null) {
+					demandRdv.setHopital(hopital);
+					demandRdv.setMedecin(med);
+					demandRdv.setPatient(patient);
+					//affectation demande
+					demandRdv.setEtat(1);
+				}
+				
+			rdvRepository.save(demandRdv);
+			 
+			 return hopital;
 	}
 	@PutMapping("/rendvput/{id}")
 	public ResponseEntity<Hopital> updaterendv(@PathVariable(value = "id") Long HopitalId,
@@ -83,8 +116,34 @@ public class HopitalRest {
 		hopital.setEtatest(HopitalDetails.getEtatest());
 		hopital.setGouvernerat(HopitalDetails.getGouvernerat());
 		hopital.setNomHopital(HopitalDetails.getNomHopital());
+		
 //		hopital.setMedecin(HopitalDetails.getMedecin());
 //		hopital.setPatient(HopitalDetails.getPatient());
+		final Hopital updatedRendv = hopitalRepository.save(hopital);
+		return ResponseEntity.ok(updatedRendv);
+	}
+	@PutMapping("/rendvputmedecinaccept")
+	public ResponseEntity<Hopital> updaterendv(@RequestParam(value = "id") Long HopitalId) throws Exception {
+		Hopital hopital = hopitalRepository.findById(HopitalId)
+				.orElseThrow(() -> new Exception("User not found for this id :: " + HopitalId));
+		DemandRdv demandRdv = new DemandRdv();
+
+		  demandRdv = rdvRepository.getHopitalById(HopitalId);
+		  demandRdv.setEtat(2);
+
+		final Hopital updatedRendv = hopitalRepository.save(hopital);
+		return ResponseEntity.ok(updatedRendv);
+	}
+	@PutMapping("/rendvputmedecinrefuse/{id}")
+	public ResponseEntity<Hopital> updaterendvrefuse(@RequestParam(value = "id") Long HopitalId) throws Exception {
+		Hopital hopital = hopitalRepository.findById(HopitalId)
+				.orElseThrow(() -> new Exception("User not found for this id :: " + HopitalId));
+		DemandRdv demandRdv = new DemandRdv();
+
+		  demandRdv = rdvRepository.getHopitalById(HopitalId);
+		  //etat d'affectation
+		  demandRdv.setEtat(1);
+
 		final Hopital updatedRendv = hopitalRepository.save(hopital);
 		return ResponseEntity.ok(updatedRendv);
 	}
